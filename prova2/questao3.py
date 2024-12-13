@@ -26,6 +26,22 @@ def main() -> None:
     B = [12, -6.5, 16, 17]
     # Resultado esperado x = [2, 4, -3, 0.5]
 
+    # A = [[9, -4, -2, 0], [-4, 17, -6, -3], [-2, -6, 14, -6], [0, -3, -6, 11]]
+    # B = [24, -16, 0, 18]
+    # Resultado esperado x = [4.0343, 1.6545, 2.8452, 3.6395]
+
+    # A = [[0.0003, 12.34], [0.4321, 1]]
+    # B = [12.343, 5.321]
+    # Resultado esperado x = [10, 1]
+
+    # A = [[3, 2, 4], [1, 1, 2], [4, 3, -2]]
+    # B = [1, 2, 3]
+    # Resultado esperado x = [-3, 5, 0]
+
+    # A = [[0.0002, 2], [2, 2]]
+    # B = [5, 6]
+    # Resultado esperado x = [0.5, 0.25]
+
     try:
         if not linalg.det(A):
             raise ValueError
@@ -33,7 +49,7 @@ def main() -> None:
         x = gaussian_elimination(A, B)
         
         for a in range(1, len(x) + 1):
-            print(f'x{a} = {x[a - 1]}')
+            print(f'x{a} = {x[a - 1]:.4f}')
     except ValueError:
         print('O sistema linear não pode ser resolvido, pois a matriz A é singular.')
     except UserWarning:

@@ -24,6 +24,7 @@ def gaussian_elimination(coefficient_matrix: list[list[float]], constant_vector:
 def main() -> None:
     A = [[4, -2, -3, 6], [-6, 7, 6.5, -6], [1, 7.5, 6.25, 5.5], [-12, 22, 15.5, -1]]
     B = [12, -6.5, 16, 17]
+    # Resultado esperado x = [2, 4, -3, 0.5]
 
     try:
         if not linalg.det(A):

@@ -6,8 +6,14 @@ def gaussian_elimination(coefficient_matrix: list[list[float]], constant_vector:
     n = len(coefficient_matrix)
 
     for k in range(0, n - 1):
-        if coefficient_matrix[k][k] == 0:
-            raise UserWarning
+        if not coefficient_matrix[k][k]:
+            for a in range(k, n):
+                if coefficient_matrix[a][k]:
+                    coefficient_matrix[k], coefficient_matrix[a] = coefficient_matrix[a], coefficient_matrix[k]
+                    constant_vector[k], constant_vector[a] = constant_vector[a], constant_vector[k]
+                    break
+            else:
+                raise ValueError
 
         for i in range(k + 1, n):
             m = coefficient_matrix[i][k] / coefficient_matrix[k][k]
@@ -42,6 +48,16 @@ def main() -> None:
     # B = [5, 6]
     # Resultado esperado x = [0.5, 0.25]
 
+    # A = [[1, -1, 1], [1, 0, 0], [1, 2, 4]]
+    # B = [4, 1, -1]
+    # Resultado esperado x = [1, -2.3, 0.67]
+
+    # A = [[0, 0.9231, 0, 0, 0, 0, 0, 0], [-1, -0.3846, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0.8575, 0],
+    #      [1, 0, -0.7809, 0, 0, 0, 0, 0], [0, -0.3846, -0.7809, 0, -1, 0.3846, 0, 0],
+    #      [0, 0.9231, 0.6247, 0, 0, -0.9231, 0, 0], [0, 0, 0.6247, -1, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, -0.5145, -1]]
+    # B = [1690, 3625, 0, 0, 0, 0, 0, 0]
+    # Resultado esperado x = [-4329.1, 1830.8, -5543.8, -3463.2, 2886.2, -1920.9, -3365.9, -1731.5]
+
     try:
         if not linalg.det(A):
             raise ValueError
@@ -52,8 +68,6 @@ def main() -> None:
             print(f'x{a} = {x[a - 1]:.4f}')
     except ValueError:
         print('O sistema linear não pode ser resolvido, pois a matriz A é singular.')
-    except UserWarning:
-        print('O sistema linear não pode ser resolvido, pois a matriz A possui um pivô nulo.\nRecomenda-se a troca de linhas')
 
 
 if __name__ == '__main__':

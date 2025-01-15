@@ -2,6 +2,15 @@ import numpy as np
 from questao4 import is_diagonally_dominant, determinant, are_b_values_equal, has_zero_in_diagonal, is_solution_valid
 
 
+def is_sassenfeld_valid(A: np.ndarray) -> bool:
+    beta = [1] * len(A)
+    
+    for a in range(len(A)):
+        beta[a] = sum([abs(b) * abs(c) for i, (b, c) in enumerate(zip(A[a], beta)) if i != a]) / abs(A[a][a])
+    
+    return max(beta) < 1
+
+
 # Função que implementa o método de Gauss-Seidel
 def gauss_seidel(A: np.ndarray, b: np.ndarray, tol=1e-6, max_iter=1000) -> tuple[np.ndarray, int]:
     n = len(A)
@@ -42,11 +51,15 @@ def solve_system(A: np.ndarray, b: np.ndarray) -> tuple[np.ndarray, int]:
     
     # Verificar se a matriz é diagonal dominante
     if not is_diagonally_dominant(A):
-        print("A matriz não é diagonal dominante. O resultado pode não convergir.")
-    
+        print("A matriz não é diagonal dominante. O resultado pode não convergir.\n")
+
+        # Verificar se a matriz está de acordo com o critério de Sassenfeld.
+        if not is_sassenfeld_valid(A):
+            print("A matriz não está de acordo com o critério de Sassenfeld. O resultado pode não convergir.\n")
+
     # Verificar se todos os valores de b são iguais
     if are_b_values_equal(b):
-        print("Os valores de b são todos iguais. O resultado pode não convergir.")
+        print("Os valores de b são todos iguais. O resultado pode não convergir.\n")
     
     # Resolver o sistema usando o método de Gauss-Seidel
     x, iter_count = gauss_seidel(A, b)
@@ -71,6 +84,64 @@ def main() -> None:
     # b = np.array([-3, 3])
     # Resultado esperado x = [1.5, 1.5]
 
+    # A = np.array([[-0.7071, 0, 0, 1, 0.7071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [-0.7071, 0, -1, 0, -0.7071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, -0.7071, -1, 0, 0, 0.7071, 1, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0.7071, 0, 1, 0, 0.7071, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, -1, -0.7071, 0, 0, 1, 0.7071, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, -0.7071, 0, -1, 0, -0.7071, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0.7071, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -0.7071, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.7071, -1, 0, 0, 1],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0.7071, 0, 1, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.7071, -1]])
+    # b = np.array([0, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    # Resultado esperado x = [-29.247105, 19, 10, -28, 13.853892, 19, 0, -28, 9.235928, 0, -16, -9.235928, 22, 16, -24.629141, 16]
+
+    # A = np.array([[2, 1, 7, 4, -3, -1, 4, 4, 7, 0],
+    #      [4, 2, 2, -3, -2, 0, 3, 3, 3, 4],
+    #      [3, 4, 4, 2, 1, -2, 2, 1, 9, -3],
+    #      [9, 3, 5, 1, 0, 5, 6, -5, -3, 4],
+    #      [2, 0, 7, 0, -5, 7, 1, 0, 1, 6],
+    #      [1, 9, 8, 0, 3, 9, 9, 0, 0, 5],
+    #      [1, 1, 9, 0, 4, 3, 7, -4, 1, 3],
+    #      [6, 3, 1, 1, 6, 8, 3, 3, 0, 2],
+    #      [6, 5, 0, -7, -7, -7, 6, 2, -6, 1],
+    #      [1, 6, 3, 4, 8, 3, -5, 0, -6, 0]])
+    # b = np.array([86, 45, 52.5, 108, 66.5, 90.5, 139, 61, -43.5, 31])
+    # Resultado esperado x = [3, -4.5, 7, 8, 3.5, 2, 4, -3.5, 2, 1.5]
+
+    # A = np.array([[4, -1,  0, -1,  0,  0,  0,  0,  0,  0],
+    #      [-1, 4, -1,  0, -1,  0,  0,  0,  0,  0],
+    #      [0, -1,  4,  0,  0, -1,  0,  0,  0,  0],
+    #      [-1, 0,  0,  4, -1,  0, -1,  0,  0,  0],
+    #      [0, -1,  0, -1,  4, -1,  0, -1,  0,  0],
+    #      [0,  0, -1,  0, -1,  4,  0,  0, -1,  0],
+    #      [0,  0,  0, -1,  0,  0,  4, -1,  0, -1],
+    #      [0,  0,  0,  0, -1,  0, -1,  4, -1,  0],
+    #      [0,  0,  0,  0,  0, -1,  0, -1,  4, -1],
+    #      [0,  0,  0,  0,  0,  0, -1,  0, -1,  4]])
+    # b = np.array([-110, -30, -40, -110, 0, -15, -90, -25, -55, -65])
+    # Resultado esperado x = [-48.646412, -35.4947917, -25.6157408, -49.0908565, -37.7170139, -26.9681713, -39.3142361, -29.5399306, -26.8773148, -22.9693287]
+
+    # A = np.array([[1, 0.5, -0.1, 0.1], [0.2, 1, -0.2, -0.1], [-0.1, -0.2, 1, 0.2], [0.1, 0.3, 0.2, 1]])
+    # b = np.array([0.2, -2.6, 1, -2.5])
+
+    # A = np.array([[2, 1, 3], [0, -1, 1], [1, 0, 3]])
+    # b = np.array([9, 1, 3])
+
+    # A = np.array([[1, 0, 3], [0, -1, 1], [2, 1, 3]])
+    # b = np.array([3, 1, 9])
+
+    # A = np.array([[3, 0, 1], [1, -1, 0], [3, 1, 2]])
+    # b = np.array([3, 1, 9])
+
     # A = np.array([[5, 2, 2], [1, 3, 1], [0, 6, 8]])
     # b = np.array([3, -2, -6])
 
@@ -85,8 +156,7 @@ def main() -> None:
             print(f'x{a + 1}: {solution[a]}')
         
         # Verificar se a solução é válida
-        if not is_solution_valid(A, b, solution):
-            print("\nA solução não é válida!")
+        print("\nA solução é válida!" if is_solution_valid(A, b, solution) else "\nA solução não é válida!")
 
         print("\nNúmero de iterações:", iterations)
     except ValueError as e:

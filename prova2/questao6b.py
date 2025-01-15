@@ -26,13 +26,13 @@ def main() -> None:
     print()
     print("(b, 2)")
 
-    n = 5
-    solution = gaussian_elimination(
-        get_hilbert_matrix(n), 
-        [sum([1/(i + j - 1) for j in range(1, n + 1)]) for i in range(1, n + 1)]
-    )
+    for n in range(3, 11):    
+        solution = gaussian_elimination(
+            get_hilbert_matrix(n), 
+            [sum([1/(i + j - 1) for j in range(1, n + 1)]) for i in range(1, n + 1)]
+        )
 
-    print(f"A solução do sistema H{n}x = b{n} é x = {solution}")
+        print(f"\nA solução do sistema H{n}x = b{n} é x = {solution}")
 
 
 if __name__ == '__main__':

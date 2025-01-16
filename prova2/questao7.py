@@ -1,10 +1,10 @@
-import csv
+from csv import DictReader
 
 def load_lagrange(file:str) -> tuple[list, list]:
     X,Y=[],[]
 
     with open(file) as csv_f:
-        reader = csv.DictReader(csv_f)
+        reader = DictReader(csv_f)
 
         for line in reader:
             X.append(float(line["X"]))

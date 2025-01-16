@@ -1,6 +1,18 @@
 import csv
 
-def polinomio_lagrange(X:list[float], Y:list[float], x:float):
+def load_lagrange(file:str) -> tuple[list, list]:
+    X,Y=[],[]
+
+    with open(file) as csv_f:
+        reader = csv.DictReader(csv_f)
+
+        for line in reader:
+            X.append(float(line["X"]))
+            Y.append(float(line["Y"]))
+
+    return X, Y
+
+def polinomio_lagrange(X:list[float], Y:list[float], x:float) -> float:
     coeficientes=[]
     n = len(X)
 
@@ -21,16 +33,9 @@ def polinomio_lagrange(X:list[float], Y:list[float], x:float):
 
 
 def main() -> None:
-    X,Y=[],[]
+    X, Y = load_lagrange('Lagrange_Q7.csv')
 
-    with open('Lagrange.csv') as csv_f:
-        reader = csv.DictReader(csv_f)
-
-        for line in reader:
-            X.append(float(line["X"]))
-            Y.append(float(line["Y"]))
-
-    x=float(input("Valor a ser interpolado: "))
+    x = float(input("Valor a ser interpolado: "))
     
     pn = polinomio_lagrange(X, Y, x)
     print("pn =", pn)

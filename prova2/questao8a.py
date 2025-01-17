@@ -6,7 +6,7 @@ def main() -> None:
     x = 3.1
     pn = polinomio_lagrange(X, Y, x)
     
-    print("pn =", pn)
+    print(f"e^{x} ≈", pn)
 
 
 if __name__ == '__main__':

@@ -34,7 +34,7 @@ def integral_simpson_3_8(limite_inf:float, limite_sup:float, n:int, f:callable, 
     for i, x in enumerate(values):
         if (i==0 or i==n):
             soma1 += f(x)
-        elif (i%3==2 or i%3==0):
+        elif (i%3==1 or i%3==2):
             soma2 += 3*f(x)
         else:
             soma3 += 2*f(x)

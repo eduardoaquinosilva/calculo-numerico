@@ -4,6 +4,8 @@
     A ideia é usar a integração para estimar o tempo total de execução de um algoritmo que varia de acordo com o tamanho da entrada.
     
     Supondo que o tempo de um algoritmo é dado por T(n) e que deseja-se calcular o tempo total de execução acumulado para entradas que variem de n = 1 até n = N, podemos utilizar o seguinte algoritmo.
+
+    T(n) = n * logn + n^2/2 + sin(n)
 """
 
 from math import log, sin

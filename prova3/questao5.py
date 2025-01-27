@@ -21,7 +21,7 @@ from numpy import linspace
 N = 1000  # População total
 
 
-def runge_kutta_4_sir(s0: float, i0: float, r0: float, beta: float, gamma: float, h: float, n: int):
+def runge_kutta_4_sir(s0: float, i0: float, r0: float, beta: float, gamma: float, h: float, n: int) -> tuple[float]:
     s, i, r = [0] * (n + 1), [0] * (n + 1), [0] * (n + 1)
 
     s[0], i[0], r[0] = s0, i0, r0

@@ -1,45 +1,45 @@
 from math import sqrt
 
-def f(x:float) -> float:
+def f(x: float) -> float:
     return sqrt(1 - x**2)
 
 
-def integral_simpson_1_3(limite_inf:float, limite_sup:float, n:int, f:callable, values:list[float] | None = None) -> float:
-    deltax = (limite_sup-limite_inf)/n
+def integral_simpson_1_3(limite_inf: float, limite_sup: float, n: int, f: callable, values: list[float] | None = None) -> float:
+    n_base = n if values is None else len(values) - 1
+    deltax = (limite_sup - limite_inf) / n_base
 
     soma1, soma2, soma3 = 0, 0, 0
-
-    values = [limite_inf+deltax*i for i in range(n)] if values is None else values
+    values = [limite_inf + deltax * i for i in range(n)] if values is None else values
 
     for i, x in enumerate(values):
-        if (i==0 or i==n):
+        if (i == 0 or i == n_base):
             soma1 = (soma1 + f(x))
-        elif (i%2==0):
-            soma2 = (soma2 + 2*f(x))
+        elif (i % 2 == 0):
+            soma2 = (soma2 + 2 * f(x))
         else:
-            soma3 = (soma3 + 4*f(x))
+            soma3 = (soma3 + 4 * f(x))
             
-    soma = (soma1 + soma2 + soma3)*(deltax/3)    
+    soma = (soma1 + soma2 + soma3) * (deltax / 3)    
 
     return soma
 
 
-def integral_simpson_3_8(limite_inf:float, limite_sup:float, n:int, f:callable, values:list[float] | None = None) -> float:
-    deltax = (limite_sup-limite_inf)/n
+def integral_simpson_3_8(limite_inf: float, limite_sup: float, n: int, f: callable, values: list[float] | None = None) -> float:
+    n_base = n if values is None else len(values) - 1
+    deltax = (limite_sup - limite_inf) / n_base
 
     soma1, soma2, soma3 = 0, 0, 0
-
-    values = [limite_inf+deltax*i for i in range(n)] if values is None else values
+    values = [limite_inf + deltax * i for i in range(n)] if values is None else values
 
     for i, x in enumerate(values):
-        if (i==0 or i==n):
+        if (i == 0 or i == n_base):
             soma1 += f(x)
-        elif (i%3==1 or i%3==2):
-            soma2 += 3*f(x)
+        elif (i % 3 == 1 or i % 3 == 2):
+            soma2 += 3 * f(x)
         else:
-            soma3 += 2*f(x)
+            soma3 += 2 * f(x)
 
-    soma = (soma1 + soma2 + soma3)*(3*deltax/8)
+    soma = (soma1 + soma2 + soma3) * (3 * deltax / 8)
 
     return soma
 

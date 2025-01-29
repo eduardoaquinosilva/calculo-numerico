@@ -64,6 +64,9 @@ def main():
     t_rk4, v_rk4, y_rk4 = runge_kutta_4(f, v0, t0, y0, h)
     t_euler, v_euler, y_euler = euler(f, v0, t0, y0, h)
 
+    print(f"Momento em que atinge o chão (Runge-Kutta): {t_rk4[-1]:.2f}s")
+    print(f"Momento em que atinge o chão (Euler): {t_euler[-1]:.2f}s")
+
     plt.plot(t_rk4, v_rk4, color='r', label='Runge Kutta 4 - Velocidade')
     plt.plot(t_euler, v_euler, color='g', label='Euler - Velocidade', linestyle=':')
     plt.plot(t_rk4, y_rk4, color='b', label='Runge Kutta 4 - Posição', linestyle='--')

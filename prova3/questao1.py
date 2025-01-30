@@ -23,16 +23,11 @@ def integral_ponto_central(limite_inf: float, limite_sup: float, n: int, f: call
     n_base = n if values is None else len(values) - 1
     deltax = (limite_sup - limite_inf) / n_base
 
-    soma1, soma2 = 0, 0
-    values_iterable = [limite_inf + deltax * i for i in range(n)] if values is None else values
+    soma = 0
+    values_iterable = [limite_inf + deltax * (i + 1/2) for i in range(n)] if values is None else values
 
-    for i, x in enumerate(values_iterable):
-        if (i == 0 or i == n_base):
-            soma1 = f(limite_sup) + f(limite_inf)
-        else:
-            soma2 += f(x)
-            
-    soma = (soma1 + 2 * soma2) * (deltax / 2)
+    for x in values_iterable:
+        soma += f(x) * deltax
 
     return soma
 
